@@ -1,0 +1,905 @@
+\nonstopmode
+
+\documentclass[a4paper]{article}
+
+%% Language and font encodings
+\usepackage[english]{babel}
+
+%% Sets page size and margins
+\usepackage[a4paper,top=1.75cm,bottom=2cm,left=2cm,
+			right=2cm, marginparwidth=1.75cm]{geometry}
+
+\usepackage{amsmath,amssymb}
+\usepackage{hyperref}
+
+\setlength{\parindent}{3em}
+\usepackage{epigraph}
+\setlength{\epigraphwidth}{0.7\textwidth}
+\renewcommand{\epigraphrule}{0pt}
+
+\setcounter{tocdepth}{2} % 3 to show subsubsections
+\title{Finance 361}
+
+\date{}
+\author{Guy Nankivell}
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Introduction to Investments}
+An investment is the current commitment of money or other resource in the
+expectation of receiving future benefits.
+\section{Investors, Assets and Markets}
+
+\section{Real world frictions and investment Styles}
+\section{Risk and Return, Expectations and Pricing}
+\subsection{Pricing risk}
+The argument for risk being priced stems from financial economics and only
+requires two basic assumptions; people have insatiable appetite 
+for wealth and the law of diminishing marginal returns.
+\subsection{Utility Functions}
+Economically, happiness is measured in utility. Utility is a
+function of wealth $U(W)$, utility is increasing in wealth $U'(W) > 0$
+and utility increases in wealth at a decreasing rate $U''(W) < 0$. Thus,
+we say utility is \emph{concave} in wealth.\\\\
+%
+%
+What this percolates to is the notion that the utility of certain wealth
+is always higher than the utility of the average of uncertain wealth;
+or, using this framework, people are risk averse. Ergo;
+\begin{align*}
+U(E[W]) &> E[U(W)]
+\end{align*}
+Where $W$ is a vector of possible final wealth outcomes, and E[W]
+is the average of all final wealth outcomes. Finding $max(E[U(W)])$
+is done by calculating the final wealth in each state of the world,
+then calculate the utility of this final wealth in each state of the world,
+then calculate the expectation over these utilities; read: weighted average
+according to respective probabilities.
+\subsubsection{Example}
+Bob has logarithmic utility over final wealth $W_1$, given by
+$U(W_1) = ln(W_1)$. Bob has initial wealth of $W_0 = \$1000$. Bob can
+invest at the risk free rate of 5\% or invest \$1000 in a risky project
+with a 40\% probability of making \$850 and 60\% chance of making
+\$1350. What should Bob do?\\\\
+\textbf{Option 1;}
+\begin{align*}
+E[U(W_1)] &= E[U(1000 \times (1 + 5\%))]\\
+ &= E[U(1050)] \\
+ &= E[ln(1050)]\\
+ &= 6.957
+\end{align*}
+\textbf{Option 2;}
+\begin{align*}
+E[U(W_1)] 
+ &= 0.4 U(W_1) 0.6 U(W_1) \\
+&= 0.4 \times ln(850) + 0.6 \times ln(1350) \\
+&= 7.023
+\end{align*}
+Given that $U(O_2) > U(O_1)$, Bob will invest in the risky project.
+
+\subsection{Risk Aversion}
+By taking the second derivative of a person's utility function with respect to
+wealth. If the second derivative is negative, then they are risk averse.
+If the second derivative is equal to zero, then they are
+risk neutral. If the second derivative is greater than zero then utility is
+increasing in wealth at an increasing rate, making them risk seeking. This means that
+they will
+put a higher valuation on the opportunity than other risk-averse people.
+\\\\
+%
+%
+Also, utilities may not be compared across people if they have different utility
+functions.
+\subsection{Derivative Hints}
+\begin{align*}
+\frac{d}{dx} ln(x) &= \frac{1}{x} & \frac{d}{dx} e^x &= e^x
+\end{align*}
+%
+%
+%
+\subsection{Monte Carlo Simulation}
+Mathematical technique that generates random variables for modelling risk
+or uncertainty of a certain system. Practically, it is a method of simulating
+outcomes under a set of parameters, namely a probability distribution,
+average and variance. In finance, it is used to account for randomness
+in forecasting models. The process is;
+\begin{itemize}
+\item Generate a uniformly random number between 0 and 1. This represents
+a probability corresponding to our cumulative distribution function. Excel:
+\texttt{=RAND()}
+\item Evaluate the random outcome (return) associated with this
+probability given the specified distribution. Excel:
+\texttt{=NORM.INV(probability, mean, standard\_dev)}
+\item Calculate payoff with simulated return.
+\item Repeat for 1000 trials and take the mean across all of them.
+\end{itemize}
+\section{Markowitz}
+The basic insight of Markowitz builds on the accepted notion that, in
+considering a security, an investor should consider both risk and
+expected return. Additionally, portfolio risk was quantifiable by the
+variance of returns, giving rise to the volatility. Combined, this means
+that an investor should trade off portfolio expected return against
+portfolio variance. \\\\
+%
+%
+In mean-variance analysing combinations of security portfolio, the investor
+seeks portfolio combinations from the \textbf{Pareto Optimal} expected return;
+where one improves one desirable aspect without decreasing any other
+desirable aspect.
+\subsection{Mean-Variance Analysis}
+The key assumptions are that investors have quadratic utility ($U(W) = W^2$),
+or investors have mean-variance preferences, or investor utility is approximated
+by a quadratic approximation. There too is the assumption that investors
+know the expected returns and the covariances of pairwise assets.
+This means that;
+\begin{align*}
+r_p &= \sum_{i=1}^n w_i r_i & \sigma_p^{2} &= \sum_{i=1}^n \sum_{j=1}^n w_i w_j \cdot COV[r_i,r_j]
+\end{align*}
+This suggests that any porfolio constructed with less than perfect correlation
+will provide diversification benefits. This also implies that in a large,
+well diversified portfolio, idiosyncratic risk is diversified away, leaving
+only the systematic risk which is inherent to the market; yielding that only
+market risk should earn a risk premium.
+\begin{align*}
+\sigma_p^2 &= \mathbf{w'}\mathbf{\Sigma w}
+\end{align*}
+Where $\mathbf{w}$ is a vector of weights, $\sigma$ is the variance, covariance
+matrix and $\mathbf{w'}$ is the transpose weight vector.
+\subsection{Portfolio Optimisation}
+The Markowitz optimal portfolio--or tangency portfolio--is one that
+maximises the Sharpe Ratio. The Sharpe ratio relates the returns of the
+investment to the risk, where the standard deviation of returns is used as
+a proxy for this. Thus, it is the average return earned in excess of the risk
+free rate, per unit volatility.
+\begin{align*}
+SR &= \frac{E[\mathbf{r}] - r_f}{\sigma_p} & \sigma_p &= SD[\mathbf{r}]\\
+&= \frac{\mathbf{w'r} -r_f}{\sqrt{\mathbf{w'\Sigma w}}} & &
+\end{align*}
+So to thereby solve for the optimal portfolio, $\mathbf{w}$ must be selected
+where the Sharpe Ratio is maximised. Using $\mu = \mathbf{r} -r_f$, the
+Markowitz Optimal portfolio is;
+\begin{align*}
+\mathbf{w^\star} &= \frac{\mathbf{\Sigma^{-1}\mu}}{\mathbf{1'\Sigma^{-1}\mu}}\\
+&= \frac{\mathbf{\Sigma^{-1}\mu}}{\mathbf{SUM(\Sigma^{-1}\mu)}}\\
+\end{align*}
+Though, variance may too be minimised with no consideration for the optimal
+returns of the portfolio.
+\begin{align*}
+\mathbf{w^\star_{minvar}} &= \frac{\mathbf{\Sigma^{-1}1}}{\mathbf{1'\Sigma^{-1}1}}\\
+&= \frac{\mathbf{\Sigma^{-1}1}}{\mathbf{SUM(\Sigma^{-1}1)}}\\
+\end{align*}
+\subsection{Variance-Covariance Matrix}
+Estimation for this may be done by finding historical returns for $n$ stocks,
+demeaning them
+(subtract the mean from each return of the stock), and the remaining vector
+is $\mathbf{R}$. From that, $\mathbf{\Sigma} = (\mathbf{R'R})/T$, where $T$
+is the number of periods. If you are using monthly data, this can be converted
+to annual frequency by multiplying by 12.\\\\
+%
+Note that \emph{correlation} is different to \emph{covariance}. They are however
+related thusly;
+\begin{align*}
+\sigma_{x,y} &= \rho_{x,y} \sigma_x \sigma_y
+\end{align*}
+Read as; ``Covariance of x,y is equal to the product of the correlation
+coefficient and their respective standard deviations."
+
+\section{Black-Litterman}
+The motivation for Black-Litterman Optimisation was that under Markowitz,
+the optimisation strategy, devoid of any real world constraints, can yield
+impractical to extreme portfolio weightings. It is
+based on the assumption that the market is the optimal portfolio, then solving
+for the implied expected returns and covariances. The expected returns
+are then adjusted to incorporate the investors opinions in any mispricing,
+and then re-optimise using the Markowitz approach.
+
+\section{Ordinary Least Squares Regression}
+This process minimised the sum of least squared errors; where the error is
+the defect between the fitted value and the actual value of the dependent
+variable.
+
+\subsection{T-Statistic}
+The ratio of the departure of the estimated value of a parameter from its
+hypothesised value to its standard error. An absolute t-stat greater
+than or equal to 1.96 implies a p-value of $\leq$ 5\%. Or less than a 5\% chance
+that the true coefficient could be zero.
+Calculated as
+(Estimated coefficient)/standard error, or more formally;
+\begin{align*}
+t_{\hat{\beta}} &= \frac{\hat{\beta} - \beta_0}{s.e(\hat{\beta})}
+\end{align*}
+\subsection{R-Square Measure}
+Roughly, this is the percentage variation in the dependent variable that is
+explained by the independent variables.
+\begin{align*}
+s.e &= \frac{SD[\beta]}{n_{obs.}^2}
+\end{align*}
+
+\subsection{OLS Portfolio Optimisation}
+Regress the excess returns of $n$ stocks on a constant = 1, \emph{without an
+intercept}. Ergo;
+\begin{align*}
+1 &= \sum_{i = 0}^n [\beta_i r_i] + \epsilon
+\end{align*}
+
+
+
+
+\section{CAPM, APT and Factor Pricing Models}
+\subsection{CAPM}
+This theory is emergent from the work of \emph{Markowitz}; that model satisfies the demands
+of an individual investor, CAPM is the model that shows what happens if everybody
+does this.\\\\
+%
+%
+Central to this is that everyone has identical beliefs, everyone optimises
+according to Markowitz and that no one has sufficient wealth to move
+the market alone. The assumptions are; \\\\
+Markets:
+\begin{itemize}
+\item Not subject to transaction costs (frictionless markets)
+\item Not influenced by individual investors (perfectly competitive)
+\item Contains a risk free asset which investors can invest in or borrow
+\end{itemize}
+Investors:
+\begin{itemize}
+\item Have access to every asset (integrated market)
+\item Are mean-variance optimisers
+\item Have identical beliefs (homogenous)
+\item Have the same investment horizon
+\end{itemize}
+Assets:
+\begin{itemize}
+\item Are infinitely divisible
+\item Are tradable
+\item Can be shorted indefinitely
+\end{itemize}
+Market returns are calculated by the basic formula;
+\begin{align*}
+E[r_i] &= r_f + \beta_i E[r_m -r_f] & \beta_i &= \frac{COV[r_m, r_i]}{VAR[r_m]}
+\end{align*}
+Risk premium on the market portfolio is proportional to average risk aversion
+times the market variance. 
+\begin{align*}
+COV[x,y] &= E[(x - E[x])(y - E[y])] &
+VAR[x] &= COV[x,x] = E[(x-E[x])^2] = E[x^2] - E[x]^2
+\end{align*}
+\subsection{Beta Estimation}
+Under CAPM, the beta is supposed to be a forward looking estimate of covariance of risky
+returns with the market, scaled by the variance of the market return. However, we primarily
+estimate the beta from historical returns. To make this assumption, you must argue that
+the past conditions imply the future conditions. This can be because of regulated
+industry, low rate of technological innovation, single dominant industry
+leader, stable economy, etc.
+
+\begin{align*}
+r_{i,t} - r_{f,t} &= \widehat{\alpha_i} + \widehat{\beta_i}(r_{m,t} - r_{f,t}) + \epsilon_{i,t}
+\end{align*}
+Where $i$ is a particular asset, and $t$ is a particular point in time.
+
+FINISH ALL OF THIS DETAIL
+
+\subsection{Arbitrage Pricing Theory}
+Contrasted with CAPM, arbitrage pricing theory is in effect a framework for a
+model in which returns are driven by a set of (presumed) uncorrelated risk
+factors. Realised excess returns are driven by a linear n-factor
+model, plus idiosyncratic noise. Lambda represents the sensitivity
+to the factor, which could be anything, not necessarily the market.
+\begin{align*}
+r_i - r_f &= \sum_{j=0}^{n} (\beta_{i,j} \lambda_i) + \epsilon_i \\
+E[r_i] - r_f &= \sum_{j=0}^{n} (\beta_{i,j} \lambda_i)
+\end{align*}
+\emph{Fama and French 3-factor model} was one that was proposed that encapsulates
+$SMB$ which is the return to a portfolio that is long small marketcap stocks
+and short big marketcap stocks, $MKTRF$ is the return on the market less the risk
+free rate (market excess return) and $HML$ is the return to a portfolio that
+is long high book-to-market value stocks and short low book-to-value stocks.
+
+\section{Return Predictability}
+Return predictability is the study of various methods for predicting the future
+returns of financial assets.
+
+\subsection{Testing for Return Predictability}
+In the event that you suspect some variabl $x$ which predicts future returns,
+this can be because; $x$ may be correlated with a systemic priced risk factor,
+or there are other reasons why the market is not perfectly efficient at
+eliminating excess returns associated with $x$. This can be explained through
+institutional arrangments (e.g short selling constraints), market micro-structure
+(e.g bid-ask bounce) and behavioural biases (e.g overconfidence).\\\\
+%
+To test for these characteristics, the dataset has time as horizontal series
+and a cross section of individual stocks on the vertical series. This means
+that each variable is observed for each stock per time period. Observe the
+characteristic $x$ for each time period and then sort this data set on the
+\emph{prior} month $x$ to ensure that the relationship is predictive.
+\begin{align*}
+x_{t-1} \implies r_t
+\end{align*}
+For each month, the stocks are grouped into portfolios that are sorted on $x$.
+This set is now divided into 5 equal portfolios, quintiles. The quintiles
+then have the mean return within each quintile for all the months.\\\\
+%
+%
+The \emph{factor portfolio} of $x$ is formed by going long on the edge of the
+portfolios and going short on the other edge portfolio, which is usually chosen
+such that the average return is positive, creating what is known as the
+hedge or zero-cost portfolio. The constructed portfolio is known as '5M1',
+quintile 5 minus quintile 1, and corresponds to the dynamic portfolio
+that you would construct to exploit the information characteristic $x$.
+
+\section{Behavioural Finance and Limits to Arbitrage}
+The argument is that if the market is affected by behavioural biases, it is not
+sufficient to prove that many or even most people suffer from behavioural biases;
+you have to either; show that \emph{everyone} is biased, \textbf{or} show that
+most people are biased an that those who are not biased cannot exploit
+the resulting mispricing due to the limits of arbitrage.
+
+This means that behavioural finance relies upon the limits of arbitrage and
+consistent, widespread psychological biases in decision making.
+
+\subsection{Limits to Arbitrage}
+The basis of arbitrage limitation is based upon the notion that there should
+not be any arbitrage opportunities available in the market. This is because
+that if there is an opportunity, it will be identified and depleted
+as soon as it appears. Common limits--Idiosyncratic volatility,
+agency problems, funding
+constraints, liquidity, capital.
+
+\subsection{Types of Bias}
+Information Processing;
+\begin{itemize}
+\item Forecasting Errors
+\item Overconfidence
+\item Conservatism
+\item Sample size neglect and representativeness
+\end{itemize}
+Behavioural;
+\begin{itemize}
+\item Framing
+\item Mental accounting
+\item Regret avoidance
+\end{itemize}
+
+\subsection{Framing}
+According to the Invariance Principle, it should not matter how a question is
+framed so long as the actual outcomes and probabilities in the question are the
+same. Empirically, however, it does matter. Additionally, it is said that
+"Cognitive sophistication does note attenuate the bias blind spot."
+
+
+\section{Valuation}
+Every asset, financial as well as real, has a value. The key to successful
+investing in and managing these assets lies in understanding not only what the
+value is but also the sources of the value.
+
+It is noted that even at the end of the most careful and detailed valuation,
+there will be uncertainty about the final numbers, coloured as they are by the
+assumptions that we make about the future of the company and the economy.
+
+\subsection{Discounted Cash Flow Valuation}
+This method operates under the assumption that value is the summation
+of the present value of all cash flows. This looks to find the 'intrinsic' value.
+It depends upon expected cash flows and discount rates, so is easiest to apply
+when cash flows are positive and can be reliably estimated and sensible risk
+proxies exist from which to estimate discount rates.
+
+The caveats around
+DCF as a valuation method are when the firm is struggling as a result of
+either operational or financial distress. In these cases, having values that
+may tend to be negative, raises the question of whether there is any material
+value in negative equity. Other sources or error are for cyclical firms, where
+they are very sensitive to assumptions in the economic cycle.
+\begin{align*}
+V_0^{Firm} &= \sum^n_{t=1}[\frac{FCFF_t}{(1 + WACC)^t}] + \frac{TV_n}{(1 + WACC)^n}
+\end{align*}
+We take the $FCFF_t$ to be; 
+\begin{align*}
+FCFF &= EBIT \cdot (1-t) - GROSS CAPEX + D\&A - \Delta NWC\\
+FCFE &= EBIT \cdot (1-t) - Interest Exp. - GROSS CAPEX + D\&A - \Delta NWC + (new debt - debt repaid)\\
+TV_n &= \frac{FCFF_{n+1}}{WACC_{stable} - g_{stable}}
+\end{align*}
+Where $EBIT$ is Revenue - Expenses, $t$ is the \emph{marginal} tax rate;
+$CAPEX$ is Purchase of PPE - Disposals of PPE + Purchase of intangibles, $D\&A$
+is Depreciation and amortisation; $\Delta NWC$ is the change in NWC from
+period $t-1$ to $t$. Look in \emph{Working Capital} subsection to calculate.
+
+\subsection{Relative Valuation}
+Relies on comparable companies which are close substitutes for the firm that
+is to be valued. There is an underlying presumption that the market is pricing
+these firms correctly.
+
+\section{Cost of Capital}
+Weighted average summation of cost of equity and cost of debt.
+\begin{align*}
+WACC &= \frac{D}{D+E} \cdot (1-t)r_d + \frac{E}{D + E} \cdot r_e \\
+r_e &= r_f + \beta \cdot MRP
+\end{align*}
+Calculating the beta of a private company is done by building a $\beta$ from the
+bottom up. This is done by identifying the businesses that the company is
+engaged in, finding comparable companies for each, obtaining those regression
+beta and financial leverage ratios, calculating the unlevered beta of the
+comparable group, determining the debt/equity ratio of your company and then
+calculating the levered $\beta$ of the company. However, it is noted that
+regressing is perhaps a poor analogue for market sensitivity given that in
+absolute terms the standard error is quite high for the majority of these
+calculations which suggests we should consider regression beta estimates with
+caution.\\\\
+%
+%
+Some services such as Bloomberg may calculate $\beta$ which could be used in
+calculations. This however must be considered carefully for they provide
+an `adjusted' $\beta$, which is roughly given by;
+\begin{align*}
+\beta_{adj} &= \frac{2}{3} \beta_{raw} + \frac{1}{3} \cdot 1\\
+\lim_{t\to\infty} &\beta_{raw}\rightsquigarrow 1
+\end{align*}
+Which is based on the empirical notion that in perpetuity, companies move towards the
+average beta as they become more diversified and their client base gets larger
+and thus the beta is a better indicator of \emph{future} risk. \\\\
+%
+%
+There are further issues around using historical beta estimates for small
+companies. Smaller companies often have less trading and overall liquidity in
+the stock which mean that large changes in the stock price may occur when
+trades do take place. Using a stock index as the `market' may be disingenuous
+as indices are often dominated by large companies which does not accurately
+depict the ``market portfolio" proposed by CAPM.\\\\
+%
+%
+Importance must be placed upon what the fundamental determinant of a CAPM beta
+is; type of business, operating leverage and finacial leverage. The
+mechanics of constructing a beta can be used per sector of the business and then
+taking the weighted average using the contributions of those individual sectoral
+beta. A multi-factor model may also be used if there are additional factors
+such as labour income that may not be diversified away and there is a need for
+a proxy to this risk.
+
+\begin{align*}
+\beta_L &= \beta_U [1 + (1 - t)\frac{D}{E} ] - \beta_D (1-t) \cdot \frac{D}{E} &
+%\beta_U &= \frac{\beta_L^{COMP}}{[1 + (1-t)\frac{D}{E}]}
+\beta_U &= \frac{E}{(1 - t)D + E}\beta_L + \frac{(1-t)D}{(1-t)D + E}\beta_D
+\end{align*}
+Note that again, $t$ is the marginal tax rate. In assessing the debt/equity
+ratio, this can be done by either;
+\begin{itemize}
+\item Using the industry average
+\item A \emph{reasonable} arbitrary number
+\item Target debt/equity ratio
+\end{itemize}
+\subsection{Cost of Debt}
+The cost of debt, or required rate of return on debt is the summation of the
+risk free rate, default risk, less the tax shield advantage of debt. After tax
+cost of debt = pre tax cost of debt x (1 - t). Bank loans can be valued at the
+current commercial rates. Newly issued bonds may be valued at the coupon rate
+if the bond was issued at par/face value. Old bonds that trade; use the yield to
+maturity.
+\subsection{Synthetic Ratings}
+
+\begin{align*}
+ICR = \frac{EBIT}{\text{Interest Expense}}
+\end{align*}
+
+
+\section{Cash Flows, Growth, Terminal Value}
+
+\subsection{Investment to Support Growth}
+To achieve growth, you must invest in long term assets (capex) and in
+current assets which are additions to your working capital. There must be
+consistency around estimates of growth and investment;\\\\
+%
+%
+\textbf{High Growth:} Implies a high level of investment which in turn means
+a reduction in cash flows in the short run.\\\\
+%
+%
+\textbf{Low Growth:} Implies little to no investment, but means more cash now.
+This also limits growth of cash in the long run.
+
+\subsection{Capex}
+Gross capex is the total expenditure on capital assets;\\\\
+%
+Capex = Purchase of PPE - Disposals of PPE + Purchase of intangibles\\\\
+%
+%
+Conceptually, we can make the distinction between Maintenance capex,
+spending needed to maintain existing assets; and expansion capex,
+spending needed to create new assets. Note that for calculations
+involving FCFF, use \textbf{Net Capex}, which is Gross Capex minus D\&A.
+\subsection{Working Capital}
+Defined as Current Assets - Current Liabilities. However, exclude any interest
+bearing debt from liabilities, and also exclude cash and equivalents from
+current assets. More succinctly, $OCA - OCL$, where $OCA = CA - \text{Cash and Equiv.}$
+and $OCL = CL - \text{Borrowings}$
+
+\subsection{Growth}
+The assumed growth rate can make massive differences in valuation. To estimate
+growth rates you may; extrapolate past growth rates, rely on equity analysts,
+estimate based on elements such as capex or working capital investment. \\\\
+%
+%
+Estimating the historical growth can be done by means of arithmetic or geometric
+means. Where arithmetic is simply the average of past annual growth rates,
+geometric is the constant growth rate that is applied to produce a certain
+growth in an attribute.
+\begin{align*}
+g_a &= \frac{1}{n} \sum_{i=0}^{n} x_i & g_g &= (\frac{Level_t}{Level_{t-n}})^{-n} - 1
+\end{align*}
+Geometric is preferred given that it is less sensitive to volatile annual
+growth rates.
+
+\section{FCFE and FCFF Valuation}
+\section{Bonds}
+Debt packaged as a tradeable security. The cash flows of a bond are the
+interest and principle and are paid as coupons periodically, and in a lump
+sump at maturity, respectively.
+\begin{align*}
+C &= c \times F \times \Delta
+\end{align*}
+Where $C$ is the coupon paid on each interest payment date, 
+$F$ is the face value,
+$c$ is the
+annual coupon rate in \% and $\Delta$ is the length of the coupon period in
+years (1 is annual, 0.5 is semi-annual, etc.).
+\subsection{Bond Pricing with Constant Discount Rate}
+As a consequence of the constant discount rate in bonds, we may introduce
+the concept of a discount factor $d$, evaluated at time $t$. The present value
+of some cash flow at time $t$ is thereby given by;
+\begin{align*}
+PV(CF_t) &= CF_t \cdot d_t & d_t &= \frac{1}{(1+r)^t}
+\end{align*}
+\subsection{Bond Formulae}
+\begin{align*}
+B_0 &= PV(\text{Principal}) + PV(\text{Interest})
+\end{align*}
+Using $K$, which is the set of all interest payment dates, in years from today;
+\begin{align*}
+K &= \{ \Delta, 2 \Delta, ..., T - \Delta, T \} \\
+B_0 &= \frac{F}{(1+r)^T} + \sum_{t \in K} \frac{C}{(1+r)^t} \\
+&= [F\cdot d_t] + \sum_{t \in K} [C \cdot d_t] \\
+&= \mathbf{C'd} + F \cdot d_T
+\end{align*}
+Where the last example utilises matrices as $\mathbf{C}$, is a column
+vector of coupons and $\mathbf{d}$ is a column vector of discount factors.\\\\
+%
+%
+Paul makes significant mention of a short-cut method which can be used if
+the \emph{discount rate is constant} which is likening it to an annuity where
+the coupon payments go from $t = \Delta \to t = T$.
+
+This is allegedly
+\textbf{really useful} ``when you have to value a bond with 60 coupon payments
+in an exam".
+
+\begin{align*}
+s &= (1 + r)^{\Delta} - 1 \\
+B_0 &= \frac{F}{(1+r)^T} + \frac{C}{s} \left [ 1- \frac{1}{(1 + s)^{T/\Delta}} \right ]
+\end{align*}
+%
+$s$ in this case is the periodic discount rate that corresponds to the annual
+discount rate $r$.
+\subsection{Accrued Interest}
+When bonds are transacted, there is sometimes a residual in `accrued interest',
+they rarely are traded on the date of issuance of a coupon so the seller
+often requires compensation for holding the bond over the period.
+
+The `clean' price is the present value of the bond cash flows that exclude the
+next coupon to be paid. The `dirty' price is inclusive of the time value of
+coupon interest that is accrued, but not earned for they do not receive
+the coupon payment.
+
+\subsection{Yield to Maturity}
+The yield to maturity
+(henceforth, "YTM") is the internal rate of return (IRR) of an investment
+in the bond assuming the bond is held to maturity (and does not default).
+YTM is the discount rate that makes the bond price equal to the market price.
+Some $y$, such that;
+\begin{align*}
+M_0 &= \frac{F}{(1 + y)^T} + \sum_{t \in K} \frac{C}{(1 + y)^t}
+\end{align*}
+
+\subsection{Zero Coupon Bonds}
+A bond that does not pay coupons ($c = 0$),
+therfore, the only cash flow is the return
+of the face value at maturity. Even if there are no zero coupon bonds traded,
+one can still create a synthetic zero by forming a portfolio that is long
+and short various bonds such that the cash flows are net zero except on one
+date.
+
+\subsection{Floating Rate Notes}
+A bond that is linked to some index, often LIBOR, or equivalent. For instance,
+a bond with quarterly coupons may be quoted as $F \cdot (\text{3-month LIBOR
++ margin})$, or more concisely; ``TNZ 3mLibor + 0.65\% 15/3/2018"
+
+
+\section{Term Structure}
+Different time periods have different discount rates and describe this term
+structure, or `curves' of interest as it is also known. Pricing bonds
+using curves changes very little; we merely replace $r$ with $r_t$, making
+special note that the annuity shortcut formula will no longer work as the
+discount rate is not constant.
+\begin{align*}
+B_0 &= \frac{F}{(1 + r_T)^T} + \sum_{t \in K} \frac{C}{(1 + r_t)^t} &
+\{r_t | t \in K\} &
+\end{align*}
+
+\subsection{Forward Rates}
+Forward rates are a calculated rate which simulate current expectations of future
+bond interest rates. This calculation is based of the assumption of
+equivalence between holding bonds over different periods and allows you to
+determine future interest rates. For example, an 
+investor can buy a one-year bond and hold it for the year, or he can buy a
+six-month bond, and then at the end of the sixth months, buy another six-month
+bond. Under these two scenarios, the investor knows the interest rates for
+both the one-year bond and the first six-month bond. The forward rate is the
+predicted rate on the second six month bond that shows the investor that
+they would earn the same under either scenario. This is based on the assumption
+that any given period of time does not imply rates are equal across it.
+
+\subsubsection{Notation}
+The point at which we are discounting \emph{from} $t = t_2$, the point
+we are discounting \emph{to} $t = t_1$ and the point at which we observe the
+discount rate $t$. Usually this implies that $t < t_1 < t_2$; that we
+discount back in time.
+
+$r_{t, t_1, t_2}$ means the rate we use at time $t$ to discount a cash flow
+occurring at $t_2$ back to $t_1$. So, $r_{0,1,2}$ is the discount rate for
+discounting a cash flow occurring two years from now, to one year from now,
+as of the present time.
+\begin{align*}
+(1 + r_{0,0,t})^t &= (1 + r_{0,0,1})(1 + r_{0,1,2})...(1 + r_{0,t-2,t-1})
+(1 + r_{0,t-1,t})\\\\
+r_{0,t-\Delta, t} &= \left ( \frac{(1 + r_{0,0,t})^t}
+{(1 + r_{0,0,t-\Delta})^{t - \Delta}} \right )^{\frac{1}{\Delta}}
+\end{align*}
+\subsubsection{Example}
+Where the rate is known from period 0-2, and 0-1;
+\begin{align*}
+(1 + r_{0,0,2})^2 &= (1 + r_{0,0,1})(1 + r_{0,1,2})
+\end{align*}
+Which means that we can solve for $r_{0,1,2}$ thusly;
+\begin{align*}
+r_{0,1,2} &= \frac{(1 + r_{0,0,2})^2}{(1 + r_{0,0,1})} - 1
+\end{align*}
+\subsubsection{Example}
+Given the annualised returns from the table below, what is the annualised forward
+rate between $T=1.0$ and $T=3.5$?
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline
+T (years)      & 0.5 & 1   & 1.5 & 2   & 2.5 & 3 & 3.5 \\ \hline
+r (annualised) & 1.1 & 1.2 & 1.5 & 1.7 & 1.8 & 2 & 2.1 \\ \hline
+\end{tabular}
+\end{center}
+We are looking for $r_{0,1.0,3.5}$; 
+\begin{align*}
+(1 + r_{0,0,3.5})^{3.5} &= (1 + r_{0,0,1.0})(1 + r_{0,1.0,3.5})^{2.5}\\
+r_{0,1.0,3.5} &= \left[ \frac{(1 + r_{0,0,3.5})^{3.5}}{(1 + r_{0,0,1.0})} \right ]^{\frac{1}{2.5}} - 1 \\
+ &= 2.4622\%
+\end{align*}
+
+
+\subsection{Credit Ratings}
+Credit ratings give an assessment on expected loss in the event of default.
+Loss = Promised cash flows - actual cash flows.
+\begin{align*}
+EL &= \text{Expected Loss Rate}\\
+&= \frac{E[\text{Loss}]}{E[CF|\text{no default}]}\\
+&= \frac{E[CF|\text{no default}] - E[CF]}{E[CF|\text{no default}]} \\\\
+LGD &= \text{Loss Given Default rate}\\
+&= E[Loss | \text{default occurs}]\\\\
+PD &=  \text{Probability of Default}\\
+&= P(\text{Default occurs})\\\\
+EL &= PD \cdot LGD
+\end{align*}
+There is also the concept of rating transition probabilities; the probability
+of a security moving to a new rating from the current rating.
+\subsection{Measuring Credit Risk}
+Ratings are not market rates; they are merely an opinion.
+There are methods of measuring the market credit risk; namely, z-Spread and
+CDS-spread.
+\subsubsection{z-Spread}
+A single number $z$ that is added to each risk free discount rate $r_t$ such
+that the value of discounted cash flows using $r_t + z$ is equal to the market
+price of the risky bond
+\begin{align*}
+M_0 &= \frac{F}{1 + (r_T + z))^T} + \sum_{t \in K} \frac{C}{(1 + (r_t + z))^t} \\
+d_t &= (1 + r_t + z)^{-t}
+\end{align*}
+z-Spread is found by looking at comparable bonds with same rating, maturity,
+industry, etc. It can be interpreted as the additional annual yield you
+receive for taking on additional credit risk.
+\subsubsection{Credit Default Swaps}
+Akin to buying insurance to cover the default risk of a bond. The protection
+buyer pays a periodic premium to the protection seller, if the bond defaults 
+before maturity, the buyer hands over the bond to the seller and the seller
+pays the buyer the face value of the bond.
+
+The premium that is paid is usually called the \emph{CDS Spread} and is quoted
+in basis points per year. Annual dollar premium = FV x CDS spread. Given that
+CDS is the cost of insuring against credit risk, it can be interpreted as
+a measure of credit risk.
+
+\subsection{Determine Risk Free Rate from Zero Coupon Bond}
+This can be done by looking at the price of a safe zero coupon bond across
+different maturities.
+\begin{align*}
+Z_0 &= \frac{F}{(1 + r_t)^t} & r_t &= \left ( \frac{F}{Z_0} \right )^{\frac{1}{t}} - 1
+\end{align*}
+\subsubsection{Example}
+You are interested in buying a new fixed rate semi-annual coupon bond. Coupon
+rate = 4\% p.a, maturity of exactly 2 years and face value of \$100. Based upon
+the credit analysis you performed, the bond should trade at a z-spread of 125
+basis points. You want to convert this to a price. To get started you download
+the prices of a few zero coupon bonds issued by the US Federal Reserve that are
+considered perfectly safe. What is pthe price of the fixed coupon bond on offer?
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+Maturity (t, in years) & Price of zero – Z(t), in \$  \\ \hline
+0.50                   & 99.7509                                       \\ \hline
+1.00                   & 98.7654                                       \\ \hline
+1.50                   & 97.7915                                       \\ \hline
+2.00                   & 96.1169                                       \\ \hline
+2.50                   & 94.5892                                       \\ \hline
+3.00                   & 92.8599									   \\
+\hline
+\end{tabular}
+\end{center}
+Then using the formula above to calculate the risk-free rate for each of the
+maturities of the zero coupon bond. For example,
+$r_{0.5} = (\frac{100}{99.7509})^{\frac{1}{0.5}} - 1 = 0.5\%$. From this we are
+able to directly calculate the discount rate of the bond by adding the Z-spread
+factor (1.25\%/125 basis points) thusly, $r_t = r_t^f + 1.25\%$.
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+t   & Risk Free Rates & Discount Rates \\ \hline
+0.5 & 0.50            & 1.75           \\ \hline
+1.0 & 1.25            & 2.50           \\ \hline
+1.5 & 1.50            & 2.75           \\ \hline
+2.0 & 2.0             & 3.25           \\ \hline
+\end{tabular}
+\end{center}
+We then find the present values of all the cash flows by calculating the discount
+factor by using $d_0.5 = (1.0175^{0.5})^{-1} = 0.99136$, the present value by multiplying
+the discount factor by the cash flow, and then finding the summation of all of
+present values of these cash flows to yield the final bond price.
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+t   & C & F   & CF  & r    & Discount Factor & PV(CF)   \\ \hline
+0.5 & 2 &     & 2   & 1.75 & 0.9913634       & 1.982727 \\ \hline
+1   & 2 &     & 2   & 2.5  & 0.975609        & 1.951218 \\ \hline
+1.5 & 2 &     & 2   & 2.75 & 0.9601238       & 1.920248 \\ \hline
+2   & 2 & 100 & 102 & 3.25 & 0.9380368       & 95.67975 \\ \hline
+    &   &     &     &      & Price           & 101.5339 \\ \hline
+\end{tabular}
+\end{center}
+
+
+\section{Bond Portfolios and Risk Management}
+Bond price changes as yield changes. The Duration is the slope of this line.
+The slope/rate is not constant; it changes as the yield changes, which is
+\emph{convexity}. The behaviour of the price of the bond as interest rates
+change is one way to characterise the interest rate risk of a bond.
+
+\subsection{Macaulay's Duration}
+Roughly interpretable as the average time of cash flows. The weighted average
+of cash flow time where weights are used for each time is equal to the present
+value of the cash flow at that time.
+\begin{align*}
+D_{Mac.} &= \sum_{t \in K} \left [ t \cdot \frac{PV(CF_t)}{\sum_{s \in K} PV(CF_s)} \right ]\\
+&= \frac{1}{B_0} \sum_{t\in K} [t \cdot PV(CF_t)]
+\end{align*}
+Note that the denominator is the sum of the present value of all bond cash flows;
+the bond price, which gives rise to the second formula. It is, in effect, 
+the point at which there is equal cash flows on either side.
+
+\subsection{Modified Duration}
+Arguably the more useful duration metric. The modified duration is a measure
+of the sensitivity of the bond to incremental changes in yield. It is useful
+for predicting the change in bond price for a given change in yield.
+\begin{align*}
+D &= \frac{D_{Mac.}}{(1 + y)} \\
+&= - \frac{1}{B_0} \frac{\partial B_0}{\partial y}
+\end{align*}
+Which gives a very rough approximation;
+\begin{align*}
+\Delta B_0 \approx - D \cdot B_0 \cdot \Delta y
+\end{align*}
+Where in this case $\Delta$ is the traditional meaning of `change in'.
+Obviously, this approximation gets increasingly inaccurate  as $\Delta y$
+gets bigger.
+\subsection{DV01}
+Dollar value of a basis point. Given that 1 basis point is quite small, this
+approximation is pretty good in most practical situations.
+\begin{align*}
+DV01 \approx D \cdot B_0 \cdot 0.0001
+\end{align*}
+
+\subsection{Convexity}
+The slope of the duration plotted against yield. Bonds normally exhibit positive
+convexity and this is a good thing for bond holders as it implied that holding
+close to maturity means small increments in time hold large positive changes
+in the ytm; or, bonds with higher convexity will always have a higher price
+as interest rates rise or fall. Using the Taylor Approximation, we can
+establish;
+\begin{align*}
+\Delta B_0 \approx (-D \cdot \Delta y \cdot B_0) + (\frac{1}{2}\cdot C
+\cdot (\Delta y)^2 \cdot B_0)
+\end{align*}
+Thus; changes in bond price are the sum of the change in price caused by the slope
+plus the additional change in price caused by the curvature. The first part of
+the above equation is the component of bond prices change that is driven by
+duration and the second part is the component driven by convexity.
+
+\subsection{Hedging}
+Aggregation of various types of risk and then manage or hedge them at the portfolio
+level. As a general rule, if you want to perfectly hedge $n$ risks, you will
+need at least $n$ hedging instruments, each with non-zero risk exposure to all
+$n$ risks. There are two sources from which interest rate risk stems; duration
+and convexity. We use the Taylor approximation for the change in bond price
+to calculate the hedge, where ther objective of the hedge is;\\\\
+%
+%
+Change in bond value due to duration = Change in hedge value due to duration\\\\
+\subsubsection{Example}
+With a bond portfolio $B_0^P = \$100m; D^P = 2.8; C^P = 40$ and a Swap contract
+$B_0^S = \$1m; D^S = 4.5; C^S = 15$, show how you could hedge your portfolio's
+interest rate exposure as measured by duration using the available hedging
+instruments.
+Change in value due to duration;
+\begin{align*}
+\approx -D \cdot \Delta y \cdot B_0
+\end{align*}
+We can then solve using a simulteneous equation where we can find a constant
+number of swap contracts to reduce the interest rate risk.
+\begin{align*}
+-D^P \cdot \Delta y \cdot B_0^P &= a(-D^S \cdot \Delta y \cdot B_0^S)\\
+-2.8 \cdot \Delta y \cdot 100 &= a(-4.5\cdot \Delta y \cdot 1)\\
+-280 &= -4.5a \\
+a &= 62.22
+\end{align*}
+From this, we can see a long position in 62 swap contracts has the same interest
+rate risk exposure (in terms of duration) as the bond portfolio.
+\subsubsection{Example}
+For a bond portfolio $B_0^P = \$100m; D^P = 2.8; C^P = 40$,
+a swap contract $B_0^S = \$1m; D^S = 4.5; C^S = 15$ and a call option
+$B_0^C = \$1m; D^C = 2.0; C^C = 110$, how can you hedge the bond portfolio
+interest rate risk from both convexity and duration? \\\\
+%
+%
+To solve for the duration;
+\begin{align*}
+-D^P \cdot \Delta y \cdot B_0^P &= a(-D^S \cdot \Delta y \cdot B_0^S) +
+b(-D^C \cdot \Delta y \cdot B_0^C)
+\end{align*}
+To solve for the convexity;
+\begin{align*}
+\frac{1}{2} \cdot C^P \cdot (\Delta y)^2 \cdot B_0^P &=
+a(\frac{1}{2} \cdot C^S \cdot (\Delta y)^2 \cdot B_0^S) +
+b(\frac{1}{2} \cdot C^C \cdot (\Delta y)^2 \cdot B_0^C)
+\end{align*}
+You then simplify these two equations by eliminating $\Delta y$ from both
+equations, then get two equations in terms of $a$ and $b$ and solve these
+simultaneously. This yields, $a = 49.03$, $b = 29.68$.
+
+
+\iffalse
+\section{Structured Products and Securitisation}
+Packages of one or more derivatives, assets and or dynamic trading strategies
+into a note, a type of bond format. Structured notes are often exposed to risks
+that have little to do normal bond risk.
+\textbf{OKAY THIS IS REALLY DENSE REVIEW THIS}
+
+
+\fi
+
+
+
+
+\end{document}
