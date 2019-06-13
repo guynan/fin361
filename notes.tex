@@ -219,6 +219,20 @@ explained by the independent variables.
 s.e &= \frac{SD[\beta]}{n_{obs.}^2}
 \end{align*}
 
+\subsection{Confidence Intervals}
+The 95\% confidence interval is deduced below with $\mu$ being the mean, $Z$
+is the coefficient from a confidence interval table corresponding to the precision
+requested, $\sigma$ is the standard deviation and $n$ is the number of observations.
+\begin{align*}
+\mu &= \pm Z \frac{\sigma}{\sqrt{n}}
+\end{align*}
+
+\subsection{Factor Regression Tables}
+In these, generally the coefficient of the stock with respect to the factor
+is in each cell. The t-statistic is generally in parentheses, and the `const'
+row corresponds to the y-intercept, or $\alpha$
+
+
 \subsection{OLS Portfolio Optimisation}
 Regress the excess returns of $n$ stocks on a constant = 1, \emph{without an
 intercept}. Ergo;
@@ -226,6 +240,12 @@ intercept}. Ergo;
 1 &= \sum_{i = 0}^n [\beta_i r_i] + \epsilon
 \end{align*}
 
+\subsection{Standard Deviation}
+Can be calculated for a population sample thusly;
+\begin{align*}
+\sigma^2 &= \frac{1}{n} \sum_{i=0}^{n}(x_i - \mu)^2 & \mu &= \frac{1}{n} \sum_{i=0}^n x_i \\
+\sigma &= \sqrt{\sigma^2} & & 
+\end{align*}
 
 
 
@@ -280,8 +300,6 @@ leader, stable economy, etc.
 r_{i,t} - r_{f,t} &= \widehat{\alpha_i} + \widehat{\beta_i}(r_{m,t} - r_{f,t}) + \epsilon_{i,t}
 \end{align*}
 Where $i$ is a particular asset, and $t$ is a particular point in time.
-
-FINISH ALL OF THIS DETAIL
 
 \subsection{Arbitrage Pricing Theory}
 Contrasted with CAPM, arbitrage pricing theory is in effect a framework for a
@@ -478,7 +496,10 @@ current commercial rates. Newly issued bonds may be valued at the coupon rate
 if the bond was issued at par/face value. Old bonds that trade; use the yield to
 maturity.
 \subsection{Synthetic Ratings}
-
+Interest Coverage Ratio is often used to determine what credit rating a firm
+will receive. When a synthetic ratio is calculated, this value determined
+by the credit rating is then added to the risk free rate to deduce the discount
+rate for cost of debt.
 \begin{align*}
 ICR = \frac{EBIT}{\text{Interest Expense}}
 \end{align*}
